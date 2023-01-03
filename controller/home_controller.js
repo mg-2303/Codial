@@ -1,5 +1,5 @@
 module.exports.home = function (req, res) {
-    res.send('<h1> Codial | home </h1>');
+    res.render('home', { title: "Home" });
 }
 
 //module.exports.actionName=function(req,res){}
