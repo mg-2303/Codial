@@ -1,6 +1,16 @@
 const express = require('express');
 const port = 8000;
 const app = express();
+var expressLayouts = require('express-ejs-layouts');
+const db = require('./config/mongoose');
+
+app.use(express.static('./assets'));
+
+app.use(expressLayouts);
+// If you like to place all the script blocks at the end, you can do it like this:
+// extract style and scripts from sub pages into the layout
+app.set('layout extractStyles', true);
+app.set('layout extractScripts', true);
 
 
 //Use Express Router
