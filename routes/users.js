@@ -3,7 +3,7 @@ const passport = require('passport');
 const router = express.Router();
 const userConroller = require('../controller/users_controller');
 
-router.get('/profile', passport.checkAuthentication ,userConroller.profile);
+router.get('/profile', passport.checkAuthentication, userConroller.profile);
 router.get('/sign-in', userConroller.signIn);
 router.get('/sign-up', userConroller.signUp);
 router.post('/create', userConroller.create);
@@ -12,4 +12,7 @@ router.post('/create-session', passport.authenticate(
     'local',
     { failureRedirect: '/users/sign-in' },
 ), userConroller.createSession);
+
+router.get('/sign-out', userConroller.destroy);
+
 module.exports = router;

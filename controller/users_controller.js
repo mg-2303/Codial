@@ -1,3 +1,4 @@
+const passport = require('passport');
 const User = require('../model/user');
 
 module.exports.profile = function (req, res) {
@@ -23,6 +24,11 @@ module.exports.profile = function (req, res) {
 
 // render the sign-in Page
 module.exports.signIn = function (req, res) {
+
+    if (req.isAuthenticated()) {
+        return res.redirect('/users/profile');
+    }
+
     return res.render('user_sign_in', {
         title: 'Codiel | Sign In'
     });
@@ -30,6 +36,9 @@ module.exports.signIn = function (req, res) {
 
 // render the sign-up Page
 module.exports.signUp = function (req, res) {
+    if (req.isAuthenticated()) {
+        return res.redirect('/users/profile');
+    }
     return res.render('user_sign_up', {
         title: 'Codiel | Sign Up'
     });
@@ -56,5 +65,15 @@ module.exports.create = function (req, res) {
 }
 
 module.exports.createSession = function (req, res) {
+    return res.redirect('/');
+}
+
+module.exports.destroy = function (req, res) {
+    req.logout((err) => {
+        if (err) {
+            // Handle any error that occurs during logout
+            return next(err);
+        }
+    });
     return res.redirect('/');
 }
