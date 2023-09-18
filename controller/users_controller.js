@@ -1,6 +1,24 @@
 const User = require('../model/user');
+
 module.exports.profile = function (req, res) {
-    return res.end('<h1>User Profile</h1>')
+    // return res.render('<h1>User Profile</h1>');
+    if (req.cookies.user_id) {
+        User.findById(req.cookies.user_id).then((user) => {
+            if (user) {
+                return res.render('user_profile', {
+                    title: 'Codiel | Profile',
+                    user: user
+                });
+            }
+            return res.redirect('/users/sign-in');
+        }).catch((err) => {
+            console.log('Error in Finding User');
+            return;
+        });
+    }
+    else {
+        return res.redirect('/users/sign-in');
+    }
 }
 
 // render the sign-in Page
@@ -37,6 +55,6 @@ module.exports.create = function (req, res) {
     })
 }
 
-module.exports.createSeassion = function (req, res) {
-    //todo-later
+module.exports.createSession = function (req, res) {
+    return res.redirect('/');
 }
