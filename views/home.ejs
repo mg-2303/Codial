@@ -1,13 +1,20 @@
-<!DOCTYPE html>
+<h1> Codiel/<%=title%>
+</h1>
+<section>
+    <h4>Posts</h4>
+    <form action="/posts/create" method="post">
+        <textarea name="content" cols="10" rows="3" placeholder="Write Here"></textarea>
+        <input type="submit" value="Post">
+    </form>
 
-<head>
-    <title>
-        <%=title%>
-    </title>
-</head>
-
-<body>
-    <h1> Codiel/<%=title%></h1>
-</body>
-
-</html>
+    <ul>
+        <%for(post of posts){%>
+            <li>
+                <%=post.content%>
+                    <small>
+                        <%=post.user.name%>
+                    </small>
+            </li>
+            <%}%>
+    </ul>
+</section>

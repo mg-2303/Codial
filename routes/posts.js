@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const userConroller = require('../controller/users_controller');
+const postConroller = require('../controller/posts_controller');
 
-router.get('/profile', userConroller.profile);
+router.post('/create', postConroller.create);
 
 module.exports = router;
