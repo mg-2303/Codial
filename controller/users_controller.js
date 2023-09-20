@@ -3,23 +3,33 @@ const User = require('../model/user');
 
 module.exports.profile = function (req, res) {
     // return res.render('<h1>User Profile</h1>');
-    if (req.cookies.user_id) {
-        User.findById(req.cookies.user_id).then((user) => {
-            if (user) {
-                return res.render('user_profile', {
-                    title: 'Codiel | Profile',
-                    user: user
-                });
-            }
-            return res.redirect('/users/sign-in');
-        }).catch((err) => {
-            console.log('Error in Finding User');
-            return;
+    // if (req.cookies.user_id) {
+    //     User.findById(req.cookies.user_id).then((user) => {
+    //         if (user) {
+    //             return res.render('user_profile', {
+    //                 title: 'Codiel | Profile',
+    //                 user: user
+    //             });
+    //         }
+    //         return res.redirect('/users/sign-in');
+    //     }).catch((err) => {
+    //         console.log('Error in Finding User');
+    //         return;
+    //     });
+    // }
+    // else {
+    //     return res.redirect('/users/sign-in');
+    // }
+
+    User.findById(req.params.id).then((user) => {
+        return res.render('user_profile', {
+            title: 'User Profile',
+            profile_user: user
         });
-    }
-    else {
-        return res.redirect('/users/sign-in');
-    }
+    }).catch((err) => {
+        console.log('Error in findind the user', err);
+        return;
+    });
 }
 
 // render the sign-in Page
@@ -76,4 +86,18 @@ module.exports.destroy = function (req, res) {
         }
     });
     return res.redirect('/');
+}
+
+module.exports.update = function (req, res) {
+    if (req.user._id == req.params.id) {
+        User.findByIdAndUpdate(req.params.id, req.body).then((user) => {
+            return res.redirect('back');
+        }).catch((err) => {
+            console.log('Error in Updating the user', err);
+            return;
+        });
+    }
+    else {
+        return res.status(401).send('Unauthorized');
+    }
 }

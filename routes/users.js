@@ -3,7 +3,8 @@ const passport = require('passport');
 const router = express.Router();
 const userConroller = require('../controller/users_controller');
 
-router.get('/profile', passport.checkAuthentication, userConroller.profile);
+router.get('/profile/:id', passport.checkAuthentication, userConroller.profile);
+router.post('/update/:id', passport.checkAuthentication, userConroller.update);
 router.get('/sign-in', userConroller.signIn);
 router.get('/sign-up', userConroller.signUp);
 router.post('/create', userConroller.create);
