@@ -12,7 +12,7 @@ module.exports.home = function (req, res) {
             title: 'Home',
             posts: posts
         });
-    }).then((err) => {
+    }).catch((err) => {
         console.log('Error in finding the post');
         return;
     });
