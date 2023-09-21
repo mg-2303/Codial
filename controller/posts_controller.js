@@ -6,9 +6,11 @@ module.exports.create = function (req, res) {
         content: req.body.content,
         user: req.user._id
     }).then((user) => {
+        req.flash('success', 'post published');
         return res.redirect('back');
     }).catch((err) => {
         if (err) {
+            req.flash('error', err);
             console.log('Error in createing post');
             return;
         }
@@ -20,9 +22,11 @@ module.exports.destroy = function (req, res) {
         // .id means converting the object id into string
         if (post.user == req.user.id) {
             post.deleteOne();
+            req.flash('success', 'post deleted');
             Comment.deleteMany({ post: req.params.id }).then((comment) => {
                 return res.redirect('back');
             }).catch((err) => {
+                req.flash('error', err);
                 console.log('Error in deleting comments', err);
                 return;
             });
@@ -31,6 +35,7 @@ module.exports.destroy = function (req, res) {
             return res.redirect('back');
         }
     }).catch((err) => {
+        req.flash('error', err);
         console.log('Error in finding post', err);
         return;
     });

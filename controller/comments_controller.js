@@ -11,13 +11,16 @@ module.exports.create = function (req, res) {
             }).then((comment) => {
                 post.comment.push(comment);
                 post.save();
+                req.flash('success', 'Comment added');
                 return res.redirect('back');
             }).catch((err) => {
+                req.flash('error', err);
                 console.log('Error in createing comment');
                 return;
             });
         }
     }).catch((err) => {
+        req.flash('error', err);
         console.log('Can not find the post');
         return;
     });
@@ -29,8 +32,10 @@ module.exports.destroy = function (req, res) {
             let postId = comment.post;
             comment.deleteOne();
             Post.findByIdAndUpdate(postId, { $pull: { comment: req.params.id } }).then((post) => {
+                req.flash('success', 'Comment deleted');
                 return res.redirect('back');
             }).catch((err) => {
+                req.flash('error', err);
                 console.log('Error in Updating Post', err);
                 return;
             });
@@ -39,6 +44,7 @@ module.exports.destroy = function (req, res) {
             return res.redirect('back');
         }
     }).catch((err) => {
+        req.flash('error', err);
         console.log('Error in finding comment', err);
         return;
     });
